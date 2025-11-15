@@ -10,20 +10,21 @@ import Browse from './Pages/browse'
 import AddCourse from './Pages/AddCourse'
 import {ToastContainer} from 'react-toastify'
 import Dropdown from './Components/Dropdown'
+import Sidebar from './Components/teacher/Sidebar'
 
 function App() {
 
   const {isloginModalOpen, isSignupModalOpen} = useAuth()
   return (
-    <div className='min-h-screen min-w-screen bg-black'>
-      {/* <div
+    <div className='min-h-screen min-w-screen'>
+      <div
   className={`h-full w-full bg-linear-to-b from-[#E6FFFF] to-[#FFFFFF] overflow-y-hidden overflow-x-auto scrollbar-none ${
     isloginModalOpen || isSignupModalOpen ? "blur-sm" : ""
   }`}
-> */}
-        {/* <Navbar />
+>
+        <Navbar />
         <main>
-          <Outlet />
+          <Sidebar />
         </main>
         <Footer />
         <ToastContainer
@@ -39,8 +40,7 @@ function App() {
       />
       </div>
         {isloginModalOpen && <Login/>}
-        {isSignupModalOpen && <Signup/>} */}
-        <Dropdown/>
+        {isSignupModalOpen && <Signup/>}
     </div>
   )
 }

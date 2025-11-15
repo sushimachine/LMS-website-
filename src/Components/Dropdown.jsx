@@ -1,17 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 
-export default function Dropdown({ title, subtitle, children }) {
+function Dropdown({ title, subtitle, children }) {
   const [open, setOpen] = useState(false);
-  const contentRef = useRef(null);
-  const [height, setHeight] = useState("0px");
-
-  useEffect(() => {
-    if (open) {
-      setHeight(`${contentRef.current.scrollHeight}px`);
-    } else {
-      setHeight("0px");
-    }
-  }, [open]);
 
   return (
     <div className="border border-gray-700 rounded-md overflow-hidden">
@@ -23,15 +13,14 @@ export default function Dropdown({ title, subtitle, children }) {
         <div className="text-gray-400">{subtitle}</div>
       </div>
 
-      <div
-        ref={contentRef}
-        className="transition-all duration-300 ease-in-out bg-gray-900 overflow-hidden"
-        style={{ maxHeight: height }}
-      >
-        <div className="px-6 py-3 space-y-2 text-gray-300">
+      {/* Content */}
+      {open && (
+        <div className="bg-gray-900 px-6 py-3 space-y-2 text-gray-300">
           {children}
         </div>
-      </div>
+      )}
     </div>
   );
 }
+
+export default Dropdown;

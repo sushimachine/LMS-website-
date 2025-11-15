@@ -74,7 +74,7 @@ export const apiSlice = createApi({
 
         }),
 
-        getChapterForCourse : builder.query({
+        getChapterForSection : builder.query({
             async queryFn(Id){
                 try{
                     const {data, error} = await supabase.from('chapter').select('*').eq('section_id', Id)
@@ -94,4 +94,4 @@ export const apiSlice = createApi({
 
 });
 
-export const {useGetCoursesQuery, useAddCoursesMutation, useGetCourseDetailQuery, useGetChapterForCourseQuery, useGetSectionsForCourseQuery} = apiSlice
+export const {useGetCoursesQuery, useAddCoursesMutation, useGetCourseDetailQuery, useGetChapterForSectionQuery, useGetSectionsForCourseQuery} = apiSlice
