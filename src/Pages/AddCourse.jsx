@@ -4,18 +4,20 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { uploadCourseImage } from "../Services/storageService";
+import { useAuth } from "../Context/Authcontext";
 
 function AddCourse() {
 
     const navigate = useNavigate()
     const {register, handleSubmit, formState : errors, reset} = useForm()
     const [addCourses, {isLoading, isError, isSuccess, error: mutationError}] = useAddCoursesMutation()
+    const {user} = useAuth()
 
     useEffect(() => {
       if(isSuccess){
         toast.success("Course Added Succesfully!")
         reset();
-        navigate('/courses')
+        navigate('/teacher/mycourse')
       }
       if(isError){
         const message = mutationError?.data?.message || "Failed to add course. Please try again.";
@@ -37,7 +39,8 @@ function AddCourse() {
             title : data.title,
             description : data.description,
             price : data.price,
-            imgUrl : imageUrl
+            imgUrl : imageUrl,
+            user_id : user.id
           }
 
           await addCourses(newCourseInfo).unwrap()

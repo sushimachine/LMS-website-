@@ -90,23 +90,24 @@ export const apiSlice = createApi({
             providesTags : ['chapter']
         }),
 
-        AddSection : builder.mutation({
+        addSection : builder.mutation({
             async queryFn(newSection){
                 try {
-                    const {data, error} = await supabase.from('section').insert(newSection).select
+                    const {data, error} = await supabase.from('section').insert(newSection).select()
                     if(error) throw error
 
                     return {data : data[0]}
                 } catch (error) {
                     return {error : {status : error.code, data : error.data}}
                 }
-            }
+            },
+            invalidatesTags : ['section']
         }), 
 
         updataSection : builder.mutation({
             async queryFn(upadatedSection){
                 try{
-                    const {data, error} = await supabase.from('section').eq('id', upadatedSection.id).update(upadatedSection)
+                    const {data, error} = await supabase.from('section').update(upadatedSection).eq('id', upadatedSection.id).select()
                     if(error) throw error 
 
                     return {data : data}
@@ -114,20 +115,24 @@ export const apiSlice = createApi({
                 catch(error){
                     return {error : {status : error.code, data : error.data}}
                 }
-            }
+            },
+
+            invalidatesTags : ['section']
+
         }),
 
         deleteSection : builder.mutation({
             async queryFn(Id){
                 try {
-                    const {data, error} = await supabase.from('section').eq('id', Id).delete()
+                    const {data, error} = await supabase.from('section').delete().eq('id', Id)
                     if(error) throw error
                     
                     return {data : data}
                 } catch (error) {
                     return {error : {status : error.code, data : error.data}}
                 }
-            }
+            },
+            invalidatesTags : ['section']
         }),
 
         AddChapter : builder.mutation({
@@ -140,13 +145,14 @@ export const apiSlice = createApi({
                 } catch (error) {
                     return {error : {status : error.code, data : error.data}}
                 }
-            }
+            },
+            invalidatesTags : ['chapter']
         }), 
 
         updataChapter : builder.mutation({
             async queryFn(upadatedChapter){
                 try{
-                    const {data, error} = await supabase.from('chapter').eq('id', upadatedChapter.id).update(upadatedChapter)
+                    const {data, error} = await supabase.from('chapter').update(upadatedChapter).eq('id', upadatedChapter.id).select()
                     if(error) throw error 
 
                     return {data : data}
@@ -154,24 +160,84 @@ export const apiSlice = createApi({
                 catch(error){
                     return {error : {status : error.code, data : error.data}}
                 }
-            }
+            },
+            invalidatesTags : ['chapter']
         }),
 
         deleteChapter : builder.mutation({
             async queryFn(Id){
                 try {
-                    const {data, error} = await supabase.from('chapter').eq('id', Id).delete()
+                    const {data, error} = await supabase.from('chapter').delete().eq('id', Id)
                     if(error) throw error
                     
                     return {data : data}
                 } catch (error) {
                     return {error : {status : error.code, data : error.data}}
                 }
-            }
-        })
+            },
+            invalidatesTags : ['chapter']
+        }),
+
+        getTeacherCourse : builder.query({
+            async queryFn(teacher_Id){
+                try {
+                    const {data, error} = await supabase.from('courses').select('*').eq('user_id', teacher_Id).single()
+                    if(error) throw error
+
+                    return {data : data}
+                } catch (error) {
+                    return {error : {status : error.code, data : error.data}}
+                }
+            },
+            providesTags : ['courses']
+        }),
+
+        updateCourse: builder.mutation({
+            async queryFn(updatedCourse) {
+                try {
+                const { id, ...courseData } = updatedCourse;
+                
+                const { data, error } = await supabase
+                    .from('courses')
+                    .update(courseData) 
+                    .eq('id', id)       
+                    .select();
+
+                if (error) throw error;
+                return { data: data[0] };
+                } catch (error) {
+                return { error };
+                }
+            },
+            invalidatesTags: (result, error, updatedCourse) => [
+                'courses', 
+                { type: 'courses', id: updatedCourse.id }
+            ],
+        }),
+
+        deleteCourse: builder.mutation({
+            async queryFn(courseId) {
+                try {
+                const { data, error } = await supabase
+                    .from('courses')
+                    .delete()
+                    .eq('id', courseId);
+                    
+                if (error) throw error;
+                return { data };
+                } catch (error) {
+                return { error };
+                }
+            },
+            invalidatesTags: ['courses'], 
+        }),
 
     }),
 
 });
 
-export const {useGetCoursesQuery, useAddCoursesMutation, useGetCourseDetailQuery, useGetChapterForSectionQuery, useGetSectionsForCourseQuery} = apiSlice
+export const {useGetCoursesQuery, useAddCoursesMutation, useGetCourseDetailQuery,
+     useGetChapterForSectionQuery, useGetSectionsForCourseQuery,
+    useAddChapterMutation, useAddSectionMutation, useDeleteChapterMutation, useDeleteSectionMutation,
+    useUpdataChapterMutation, useUpdataSectionMutation, useGetTeacherCourseQuery, useDeleteCourseMutation,
+    useUpdateCourseMutation} = apiSlice

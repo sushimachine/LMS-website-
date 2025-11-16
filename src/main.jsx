@@ -15,6 +15,7 @@ import ProtectedRoute from './Components/ProtectedRoute.jsx'
 import AddCourse from './Pages/AddCourse.jsx'
 import TeacherLayout from './layout/teacherLayout.jsx'
 import Dashboard from './Pages/teacher/TeacherDashboard.jsx'
+import Mycourse from './Pages/teacher/MyCourse.jsx'
 
 const router = createBrowserRouter([
   {
@@ -41,7 +42,8 @@ const router = createBrowserRouter([
             element : <TeacherLayout/>,
             children : [
               {path : '/teacher/dashboard', element : <Dashboard/>},
-              {path : '/teacher/addCourse', element : <AddCourse/>}
+              {path : '/teacher/addCourse', element : <AddCourse/>},
+              {path : '/teacher/mycourse', element : <Mycourse/>}
             ]
           }
         ]
