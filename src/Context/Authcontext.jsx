@@ -30,6 +30,8 @@ export function Authprovider({children}){
     }, [])
     const [isloginModalOpen, setIsloginMoalOpen] = useState(false)
     const [isSignupModalOpen, setIsSignupModalOpen] = useState(false)
+
+    const [isSidebarOpen, setIsSidebaropen] = useState(false)
     const value = {
         user,
         isLoading,
@@ -43,7 +45,11 @@ export function Authprovider({children}){
 
         isSignupModalOpen,
         OpenSignupModal : () => setIsSignupModalOpen(true),
-        closeSignupModal : () => setIsSignupModalOpen(false)
+        closeSignupModal : () => setIsSignupModalOpen(false),
+
+        isSidebarOpen,
+        toggleSidebar : () => setIsSidebaropen(prev => !prev)
+
     };
 
     return (

@@ -4,7 +4,9 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { 
   useGetCourseDetailQuery, 
-  useUpdateCourseMutation 
+  useUpdateCourseMutation,
+  useGetChapterForSectionQuery,
+  useGetSectionsForCourseQuery 
 } from '../../store/apiSlice';
 
 function EditCourse() {
@@ -16,6 +18,8 @@ function EditCourse() {
   // Fetch the data
   const { data: course, isLoading } = useGetCourseDetailQuery(courseId);
   const [updateCourse, { isLoading: isUpdating }] = useUpdateCourseMutation();
+
+  const {data : sections, isSectionLoading} = useGetSectionsForCourseQuery()
 
   // Pre-fill the form when data arrives
   useEffect(() => {
@@ -113,6 +117,14 @@ function EditCourse() {
           </button>
         </div>
 
+      </form>
+
+      <form>
+        <h1>Course Chapter</h1>
+        
+        {sections && sections.map((section) => (
+          
+        ))}
       </form>
     </div>
   );

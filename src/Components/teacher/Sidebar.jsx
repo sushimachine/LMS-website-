@@ -1,37 +1,50 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { IoReorderThreeOutline } from "react-icons/io5";
+import { useAuth } from '../../Context/Authcontext';
 
 function Sidebar() {
+  const { isSidebarOpen, toggleSidebar } = useAuth();
+
+  const handleToggle = () => {
+    toggleSidebar();
+  };
+
   return (
-    <div className='h-screen w-1/7 flex flex-col p-4 text-[#252525] border-r border-[#637083]'>
-      <div className='flex justify-start mb-2'>
-        <IoReorderThreeOutline className='text-2xl' />
+    <div 
+      className={`h-screen flex flex-col p-4 text-[#252525] border-r border-[#637083]
+        ${isSidebarOpen ? 'w-64' : 'w-20'} 
+        transition-all duration-100 ease-in-out`}
+    >
+      
+      <div className='flex justify-center mb-8 ml-1 absolute'>
+        <IoReorderThreeOutline 
+          className={`text-2xl cursor-pointer ${isSidebarOpen ? '' : 'rotate-180'}`}
+          onClick={handleToggle}
+        />
       </div>
-      <div className='flex flex-row gap-2 p-2'>
-        <Link to='/teacher/dashboard' className='hover:underline cursor-pointer'>
-          <img src="/image/home_icon.svg" alt="" />
-          <span>Dashboard</span>
-        </Link>
-      </div>
-      <div className='flex flex-row gap-2 p-2'>
-        <Link to='/teacher/addCourse' className='hover:underline cursor-pointer'>
-          <img src="/image/add_icon.svg" alt="" />
-          <span>Add Courses</span>       
-        </Link>
-      </div>
-      <div className='flex flex-row gap-2 p-2'>
-        <Link to='/teacher/mycourse' className='hover:underline cursor-pointer'>
-          <img src="/image/MyCourses.png" alt="" />
-          <span>My Courses</span>
-        </Link>
-      </div>
-      <div className='flex flex-row gap-2 p-2'>
-        <Link to='/' className='hover:underline cursor-pointer'>
-          <img src="/image/person_tick_icon.png" alt="" className='h-6'/>
-          <span>Students Enrolled</span>        
-        </Link>
-      </div>
+
+      <nav className="flex flex-col gap-2 mt-10">
+        {[
+          { to: '/teacher/dashboard', icon: "/image/home_icon.svg", text: "Dashboard" },
+          { to: '/teacher/addCourse', icon: "/image/add_icon.svg", text: "Edit Courses" },
+          { to: '/teacher/mycourse', icon: "/image/MyCourses.png", text: "My Courses" },
+          { to: '/', icon: "/image/person_tick_icon.png", text: "Students Enrolled" },
+        ].map((item) => (
+          
+          <Link key={item.to} to={item.to} className='flex items-center gap-4 p-2 rounded-lg hover:bg-gray-100'>
+            
+            <img src={item.icon} alt="" className={item.to === '/' ? 'h-6' : 'h-5 w-5'} />
+            
+            {isSidebarOpen && (
+              <span className='whitespace-nowrap transition-opacity duration-150'>
+                {item.text}
+              </span>
+            )}
+          </Link>
+          
+        ))}
+      </nav>
     </div>
   )
 }
