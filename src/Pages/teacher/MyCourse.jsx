@@ -40,28 +40,30 @@ function Mycourse() {
         {Array.isArray(mycourses) && mycourses.map((mycourse) =>{ 
           console.log("Image URL:", mycourse.imgUrl);
           return (
-          <div key={mycourse.id} className="h-80 rounded-xl shadow-md flex flex-col hover:shadow-lg transition">
-            <img className="w-full h-1/2 object-cover rounded-t-xl" src={mycourse.imgUrl} alt="" />
-            <div className="h-1/2 w-4/5 ml-3 flex flex-col gap-1 mt-3">
-              <h1 className="text-[#0E0E0E] text-1xl font-bold">{mycourse.title}</h1>
-              <span>{mycourse.description}</span>
-              <div className="flex flex-row gap-2">
-                <span>5</span>
-                <ul className="flex flex-row items-center">
-                  {[...Array(5)].map((_, i) => (
-                    <li key={i}>
-                      <img src="/image/star_icon.png" alt="" />
-                    </li>
-                  ))}
-                </ul>
-                <span>(122)</span>
+            <Link key={mycourse.id} to={`/CourseDetail/${mycourse.id}`}>
+              <div className="h-80 rounded-xl shadow-md flex flex-col hover:shadow-lg transition">
+                <img className="w-full h-1/2 object-cover rounded-t-xl" src={mycourse.imgUrl} alt="" />
+                <div className="h-1/2 w-4/5 ml-3 flex flex-col gap-1 mt-3">
+                  <h1 className="text-[#0E0E0E] text-1xl font-bold">{mycourse.title}</h1>
+                  <span>{mycourse.description}</span>
+                  <div className="flex flex-row gap-2">
+                    <span>5</span>
+                    <ul className="flex flex-row items-center">
+                      {[...Array(5)].map((_, i) => (
+                        <li key={i}>
+                          <img src="/image/star_icon.png" alt="" />
+                        </li>
+                      ))}
+                    </ul>
+                    <span>(122)</span>
+                  </div>
+                  <h1>{mycourse.price}</h1>
+                  <Link to={`/teacher/edit-course/${mycourse.id}`}>
+                    <button className='h-7 w-10 bg-[#2563EB] text-[#FFFFFF]'>Edit</button>
+                  </Link>
+                </div>
               </div>
-              <h1>{mycourse.price}</h1>
-              <Link to={`/teacher/edit-course/${mycourse.id}`}>
-                <button className='h-7 w-10 bg-[#2563EB] text-[#FFFFFF]'>Edit</button>
-              </Link>
-            </div>
-          </div>
+            </Link>
         )})}
       </div>
     </div>

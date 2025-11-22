@@ -5,14 +5,16 @@ import { FaRegEdit } from "react-icons/fa";
 import { FiSave } from "react-icons/fi"; 
 import { toast } from 'react-toastify'; 
 
-function ChapterList({id: sectionId, edit}){ 
+function ChapterList({sectionId: sectionId, edit}){ 
 
-    const {data : chapters, isLoading : isChaptertloading} = useGetChapterForSectionQuery(sectionId) 
+    const {data : chapters, isLoading : isChaptertloading} = useGetChapterForSectionQuery(sectionId, {
+    skip: !sectionId 
+})
     const [ AddChapter ] = useAddChapterMutation()
     const [isEditing, setIsEditing] = useState(false);
     const [isAdd, setIsAdd] = useState(false)
-    const [istitle, setIstitle] = useState(''); 
-    const [isduration, setIsduration] = useState('');
+    const [istitle, setIstitle] = useState(""); 
+    const [isduration, setIsduration] = useState("");
     const [isid, setIsid] = useState(null); 
     const AddTheChapter = async (e) => {
         e.preventDefault();
@@ -20,21 +22,22 @@ function ChapterList({id: sectionId, edit}){
             const info = {
                 title : istitle,
                 duration : isduration,
-                section_id : id
+                videoUrl : null,
+                section_id : sectionId
             }
 
             await AddChapter(info)
             setIsEditing(false)
             setIsAdd(false)
 
-            toast.success("Chapter updated successfully!");
+            toast.success("Chapter added successfully!");
         } catch (error) {
             toast.error("Failed to save chapter. Check console.");
         }
     }
 
     const [ deleteChapter ] = useDeleteChapterMutation();
-    const [ updateChapter ] = useUpdataChapterMutation();
+    const [ updataChapter ] = useUpdataChapterMutation();
 
     const EditTheChapter = async (e) => {
         e.preventDefault(); 
@@ -44,7 +47,7 @@ function ChapterList({id: sectionId, edit}){
                 title: istitle,
                 duration: isduration,
             };
-            await updateChapter(updatedChapterData).unwrap();
+            await updataChapter(updatedChapterData).unwrap();
             
             setIsEditing(false); 
             toast.success("Chapter updated successfully!");
@@ -95,17 +98,17 @@ function ChapterList({id: sectionId, edit}){
                     }
                 </div>
             ))}
-            <button
+            {edit && <button
                 onClick={() => {setIsEditing(true);
                     setIsAdd(true);
                 }}
                 className="bg-blue-500 text-white px-3 py-1 rounded">
                 Add Chapter
-            </button>
+            </button>}
 
             {isEditing && 
-                <form onSubmit={isAdd ? AddTheChapter : EditTheChapter} className="p-4 bg-gray-100 rounded-md mt-4">
-                    <h4 className="font-bold mb-2">Editing: {istitle}</h4>
+                <form onSubmit={isAdd ? AddTheChapter : EditTheChapter} className="p-4 rounded-md mt-4">
+                    <h4 className="font-bold mb-2">Editing: </h4>
                     <label htmlFor="edit-title">Title:</label>
                     <input 
                         type="text" 

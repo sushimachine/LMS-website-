@@ -9,8 +9,9 @@ import { FaRegEdit } from "react-icons/fa";
 import { FiSave } from "react-icons/fi";
 
 function SectionManager({courseId}) {
-
-    const {data : sections, isLoading : isSectionLoading} = useGetSectionsForCourseQuery(courseId)
+   const {data : sections, isLoading : isSectionLoading} = useGetSectionsForCourseQuery(courseId, {
+    skip: !courseId 
+})
     const [addSection] = useAddSectionMutation()
     const [isAdd, setIsAdd] = useState(false)
     const [ isSubtitle, setIsSubtitle ] = useState("");
@@ -22,7 +23,7 @@ function SectionManager({courseId}) {
         await addSection({
             title: isTitle,
             course_id: courseId,
-            subtitle: isSubtitle // Default subtitle
+            Subtitle: isSubtitle
         }).unwrap();
         
         setIsTitle("");
@@ -37,7 +38,7 @@ function SectionManager({courseId}) {
     if(isSectionLoading) return <div>loading section.....</div>
 
   return (
-    <div>
+    <div className='w-full'>
       {Array.isArray(sections) && sections.map((section) => (
         <Dropdown
         key={section.id}

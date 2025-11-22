@@ -138,7 +138,7 @@ export const apiSlice = createApi({
         AddChapter : builder.mutation({
             async queryFn(newChapter){
                 try {
-                    const {data, error} = await supabase.from('Chapter').insert(newChapter).select()
+                    const {data, error} = await supabase.from('chapter').insert(newChapter).select()
                     if(error) throw error
 
                     return {data : data[0]}

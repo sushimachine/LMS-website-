@@ -42,8 +42,8 @@ function Browse() {
         {Array.isArray(courses) && courses.map((course) =>{ 
           console.log("Image URL:", course.imgUrl);
           return (
-            <Link to={`/CourseDetail/${course.id}`}>
-              <div key={course.id} className="h-80 rounded-xl shadow-md flex flex-col hover:shadow-lg transition">
+            <Link key={course.id} to={`/CourseDetail/${course.id}`}>
+              <div className="h-80 rounded-xl shadow-md flex flex-col hover:shadow-lg transition">
                 <img className="w-full h-1/2 object-cover rounded-t-xl" src={course.imgUrl} alt="" />
                 <div className="h-1/2 w-4/5 ml-3 flex flex-col gap-1 mt-3">
                   <h1 className="text-[#0E0E0E] text-1xl font-bold">{course.title}</h1>

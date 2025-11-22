@@ -9,6 +9,7 @@ import {
   useGetChapterForSectionQuery,
   useGetSectionsForCourseQuery 
 } from '../../store/apiSlice';
+import { uploadCourseImage } from '../../Services/storageService';
 
 function EditCourse() {
 
@@ -17,10 +18,8 @@ function EditCourse() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   
  
-  const { data: course, isLoading : isCourseLoading } = useGetCourseDetailQuery(courseId);
   const [updateCourse, { isLoading: isUpdating }] = useUpdateCourseMutation();
-
-  const {data : sections, isLoading : isSectionLoading} = useGetSectionsForCourseQuery()
+  const { data: course, isLoading : isCourseLoading } = useGetCourseDetailQuery(courseId);
 
   useEffect(() => {
     if (course) {
@@ -43,6 +42,7 @@ function EditCourse() {
       }
 
       const newCourseInfo = {
+        id: courseId,
         title : data.title,
         description : data.description,
         price : data.price,
@@ -60,12 +60,13 @@ function EditCourse() {
   if (isCourseLoading) return <div>Loading course data...</div>;
 
   return (
-    <div>
-      <h1>Edit Course: {course?.title}</h1>
+    <div className='w-full flex flex-row'>
+      <div className='w-1/2 flex flex-col'>
+        <h1>Edit Course: {course?.title}</h1>
       
-      <form onSubmit={handleSubmit(onSaveDetails)} className="h-screen w-screen m-6 flex flex-col gap-6">
+      <form onSubmit={handleSubmit(onSaveDetails)} className="h-screen w-full m-6 flex flex-col gap-6">
         
-        <div className="w-3/10 h-15 flex flex-col justify-around">
+        <div className="h-15 flex flex-col justify-around">
           <label htmlFor="title" className="font-semibold">Title</label>
           <input 
             type="text" 
@@ -78,7 +79,7 @@ function EditCourse() {
         </div>
 
 
-        <div className="w-3/10 h-20 flex flex-col gap-2">
+        <div className="h-20 flex flex-col gap-2">
           <label htmlFor="description" className="font-semibold">Description</label>
           <input 
             type="text"
@@ -88,17 +89,17 @@ function EditCourse() {
           />
         </div>
 
-        <div className="w-3/10 h-15 flex flex-col gap-2">
+        <div className="h-15 flex flex-col gap-2">
           <label htmlFor="price">Course Price</label>
           <input 
-            type="number" 
+            type="text" 
             id="price"
             className="h-7 w-full p-4 border"
             {...register("price", { required: true, valueAsNumber: true })} 
           />
         </div>
 
-        <div className="w-3/10 h-9 mt-4 flex flex-row gap-2 justify-center items-center">
+        <div className="h-9 mt-4 flex flex-row gap-2 justify-center items-center">
           <img 
             src={course.imageUrl} 
             alt={course.title} 
@@ -109,18 +110,19 @@ function EditCourse() {
           <input type="file" accept="image/*" {...register("image")} />
         </div>
 
-        <div className="h-9 w-3/10 mt-2 text-[#FFFFFF] flex justify-end">
+        <div className="h-9 mt-2 text-[#FFFFFF] flex justify-end">
           <button type="submit" className="h-full w-1/4 border bg-[#2563EB]" disabled={isUpdating}>
             {isUpdating ? "Saving..." : "Save Changes"}
           </button>
         </div>
 
       </form>
+      </div>
 
-      <div>
+      <div className='w-1/2'>
         <h1>Course Chapter</h1>
         
-        <SectionManager courseId={courseId}/>
+        <SectionManager courseId={courseId} />
       </div>
     </div>
   );

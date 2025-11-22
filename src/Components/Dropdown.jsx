@@ -21,6 +21,7 @@ function Dropdown({ course_Id, id, title, subtitle, children, edit }) {
               id: id, 
               title: istitle,
               subtitle: isSubtitle,
+              course_id : course_Id
           };
           
           await updateSection(updatedSectionData).unwrap();
@@ -48,10 +49,10 @@ function Dropdown({ course_Id, id, title, subtitle, children, edit }) {
     <div className="border border-gray-700 rounded-md overflow-hidden">
       <div
         onClick={() => setOpen(!open)}
-        className="flex justify-between items-center cursor-pointer bg-gray-800 px-4 py-3"
+        className="flex justify-between items-center cursor-pointer px-4 py-3"
       >
-        <div className="text-white font-semibold">{title}</div>
-        <div className="text-gray-400">{subtitle}</div>
+        <div className="text-black font-semibold">{title}</div>
+        <div className="text-black">{subtitle}</div>
 
         {edit && <div>
           <FaRegEdit
@@ -65,16 +66,10 @@ function Dropdown({ course_Id, id, title, subtitle, children, edit }) {
             className="hover:text-red-500 transition" />
         </div> }
 
-            <button
-                onClick={() => {setIsEditing(true);
-                }}
-                className="bg-blue-500 text-white px-3 py-1 rounded">
-                Add Section
-            </button>
       </div>
 
       {open && (
-        <div className="bg-gray-900 px-6 py-3 space-y-2 text-gray-300">
+        <div className="px-6 py-3 space-y-2">
           {children}
         </div>
       )}
@@ -90,7 +85,6 @@ function Dropdown({ course_Id, id, title, subtitle, children, edit }) {
                   onChange={(e) => setIstitle(e.target.value)}
                   className='border px-2 py-1 mr-3'
               />
-
               <label htmlFor="edit-duration">Subtitle:</label>
               <input 
                   type="text" 

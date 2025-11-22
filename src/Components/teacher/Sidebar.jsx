@@ -27,7 +27,7 @@ function Sidebar() {
       <nav className="flex flex-col gap-2 mt-10">
         {[
           { to: '/teacher/dashboard', icon: "/image/home_icon.svg", text: "Dashboard" },
-          { to: '/teacher/addCourse', icon: "/image/add_icon.svg", text: "Edit Courses" },
+          // { to: '/teacher/addCourse', icon: "/image/add_icon.svg", text: "Edit Courses" },
           { to: '/teacher/mycourse', icon: "/image/MyCourses.png", text: "My Courses" },
           { to: '/', icon: "/image/person_tick_icon.png", text: "Students Enrolled" },
         ].map((item) => (
